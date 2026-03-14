@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
@@ -15,27 +9,26 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String     @id
   name          String
-  email         String
-  emailVerified Boolean   @default(false)
+  email         String     @unique
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  posts         Post[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  savedPosts    String[]   @default([])
   categories    Category[]
-  savedPosts    String[] @default([])
+  posts         Post[]
+  accounts      Account[]
+  sessions      Session[]
 
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
@@ -43,7 +36,6 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@index([userId])
   @@map("session")
 }
@@ -53,7 +45,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -63,6 +54,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("account")
@@ -80,31 +72,31 @@ model Verification {
   @@map("verification")
 }
 
-model Post{
-  id String @id @default(uuid())
-  title String
-  slug String @unique
-  content String
-  imageUrl String
-  views Int @default(0)
-  tags String[]
-  status PostStatus @default(published)
-  userId String
-  user User @relation(references:[id],fields:[userId],onDelete:Cascade)
-  categoryId String?  
-  category Category? @relation(references:[id],fields: [categoryId],onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+model Post {
+  id         String     @id @default(uuid())
+  title      String
+  slug       String     @unique
+  content    String
+  imageUrl   String
+  views      Int        @default(0)
+  tags       String[]
+  status     PostStatus @default(published)
+  userId     String
+  categoryId String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
+  category   Category?  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Category{
-  id String @id @default(uuid())
-  name String  
-  userId String
-  user User @relation(references:[id],fields:[userId],onDelete:Cascade)
-  posts Post[]  
+model Category {
+  id        String   @id @default(uuid())
+  name      String 
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts     Post[]
 }
 
 enum PostStatus {
