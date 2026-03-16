@@ -103,6 +103,7 @@ export const removePost = async (id: string) => {
     const res = await prisma.post.delete({
       where: { id },
     });
+
     return res;
   } catch (err) {
     console.error({ err });

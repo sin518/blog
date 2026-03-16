@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { removePost } from "@/app/actions/posts";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function CellAction({ id }: { id: string }) {
@@ -28,13 +29,13 @@ export default function CellAction({ id }: { id: string }) {
   const onRemovePost = async () => {
     try {
       setIsLoading(true);
-      // await removeCategory(id);
+      await removePost(id);
       toast.success(`帖子已成功删除`);
     } catch (err) {
-      throw new Error(`删除帖子时出错 ${err}`);
+      toast.error(`删除帖子时出错 ${err}`);
+      console.error(err);
     } finally {
       router.refresh();
-
       setIsLoading(false);
       setIsDeleteModalOpen(false);
     }

@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Category, User } from "@/lib/generated/prisma/client";
 import Image from "next/image";
+import { getNameInitials } from "@/lib/utils";
 
 interface CategoryProps {
   categories: (Category & { user: User })[];
@@ -22,14 +23,21 @@ export default function DashboardCategories({ categories }: CategoryProps) {
             >
               <p className="font-medium">{category.name}</p>
               <div className="flex items-center gap-1">
-                <div className="relative h-8 w-8 rounded-full shadow-lg">
-                  <Image
-                    className="rounded-full shadow-lg"
-                    src={category.user?.image ?? ""}
-                    alt={category.user?.name}
-                    fill
-                    sizes="32px"
-                  />
+                <div className="relative h-8 w-8 rounded-full shadow-lg overflow-hidden bg-slate-200 text-xs font-semibold text-white flex items-center justify-center">
+                  {category.user?.image ? (
+                    <Image
+                      className="rounded-full shadow-lg object-cover"
+                      src={category.user.image}
+                      alt={category.user?.name ?? "avatar"}
+                      fill
+                      unoptimized
+                      sizes="32px"
+                    />
+                  ) : (
+                    <span className="uppercase">
+                      {getNameInitials(category.user?.name ?? "?") || "?"}
+                    </span>
+                  )}
                 </div>
                 <p className="font-medium">{category.user?.name}</p>
               </div>

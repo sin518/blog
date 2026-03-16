@@ -21,13 +21,20 @@ export default async function BlogPage({
         <h1 className="text-2xl md:text-5xl font-semibold">{post.title}</h1>
         <div className="flex gap-6 text-sm">
           <div className="flex gap-6">
-            <div className="relative h-8 w-8 rounded-full shadow-lg">
-              <Image
-                src={post.user.image!}
-                alt={post.user.name}
-                className="rounded-full shadow-lg"
-                fill
-              />
+            <div className="relative h-8 w-8 rounded-full shadow-lg overflow-hidden bg-slate-200">
+              {post.user.image ? (
+                <Image
+                  src={post.user.image}
+                  alt={post.user.name}
+                  className="rounded-full shadow-lg"
+                  fill
+                  unoptimized
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-[10px] font-semibold text-muted-foreground">
+                  {post.user.name?.charAt(0) ?? "?"}
+                </div>
+              )}
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-xs font-medium">{post.user.name}</span>
@@ -44,14 +51,21 @@ export default async function BlogPage({
           </div>
         </div>
 
-        <div className="relative h-80 w-full">
-          <Image
-            src={post.imageUrl}
-            alt={post.title}
-            className="rounded-sm object-cover"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+        <div className="relative h-80 w-full rounded-sm bg-slate-200 overflow-hidden">
+          {post.imageUrl ? (
+            <Image
+              src={post.imageUrl}
+              alt={post.title}
+              className="rounded-sm object-cover"
+              fill
+              unoptimized
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
+              无封面图片
+            </div>
+          )}
         </div>
         <RichTextViewer content={post.content} />
         <div className="flex gap-2 py-6 flex-wrap">

@@ -206,12 +206,18 @@ function TiptapImage(props: NodeViewProps) {
           resizing && "",
         )}
       >
-        <img
-          ref={imageRef}
-          src={node.attrs.src}
-          alt={node.attrs.alt}
-          title={node.attrs.title}
-        />
+        {node.attrs.src ? (
+          <img
+            ref={imageRef}
+            src={node.attrs.src}
+            alt={node.attrs.alt ?? ""}
+            title={node.attrs.title ?? ""}
+          />
+        ) : (
+          <div className="h-60 w-full rounded-md border border-dashed border-slate-300 bg-slate-50 text-center text-slate-500">
+            无效图片
+          </div>
+        )}
         <NodeViewContent className="text-center">
           {node.attrs.title}
         </NodeViewContent>

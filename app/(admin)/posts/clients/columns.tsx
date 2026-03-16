@@ -38,14 +38,21 @@ export const columns: ColumnDef<PostWithCategory>[] = [
     accessorKey: "imageUrl",
     header: "图片",
     cell: ({ row }) => (
-      <div className="h-10 w-15 relative">
-        <Image
-          src={row.original.imageUrl}
-          alt={row.original.title}
-          fill
-          sizes="60px"
-          className="rounded-sm"
-        />
+      <div className="h-10 w-15 relative overflow-hidden rounded-sm bg-slate-100">
+        {row.original.imageUrl ? (
+          <Image
+            src={row.original.imageUrl}
+            alt={row.original.title}
+            fill
+            unoptimized
+            sizes="60px"
+            className="rounded-sm object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[10px] text-muted-foreground">
+            无图
+          </div>
+        )}
       </div>
     ),
   },

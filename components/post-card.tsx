@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { format } from "date-fns";
 import { MoveRight } from "lucide-react";
-import RichTextViewer from "./rich-text-viewer";
 import { stripHtml } from "@/lib/utils";
 
 interface PostProps {
@@ -26,14 +25,21 @@ export default function PostCard({ post }: PostProps) {
 
   return (
     <Card className="w-full p-0 pb-4 border-0 shadow-md gap-1 relative">
-      <div className="relative h-60">
-        <Image
-          src={post.imageUrl}
-          alt={post.title}
-          fill
-          className="rounded-sm object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+      <div className="relative h-60 bg-slate-200 overflow-hidden rounded-sm">
+        {post.imageUrl ? (
+          <Image
+            src={post.imageUrl}
+            alt={post.title}
+            fill
+            unoptimized
+            className="rounded-sm object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+            无封面图片
+          </div>
+        )}
       </div>
       <CardHeader className="gap-0">
         <CardTitle className="font-semibold line-clamp-3 ">
@@ -51,14 +57,21 @@ export default function PostCard({ post }: PostProps) {
         </div>
         <div className="flex  justify-between w-full gap-2">
           <div className="flex gap-1">
-            <div className="relative h-8 w-8 rounded-full shadow-lg">
-              <Image
-                className="rounded-full shadow-lg"
-                src={post.user.image!}
-                alt={post.user.name}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
+            <div className="relative h-8 w-8 rounded-full shadow-lg overflow-hidden bg-slate-200">
+              {post.user.image ? (
+                <Image
+                  src={post.user.image}
+                  alt={post.user.name}
+                  fill
+                  unoptimized
+                  className="rounded-full shadow-lg"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-[10px] font-semibold text-muted-foreground">
+                  {post.user.name?.charAt(0) ?? "?"}
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-1">

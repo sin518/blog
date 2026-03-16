@@ -21,13 +21,20 @@ export default async function DashboardPage() {
       <div className="flex flex-wrap w-full flex-col gap-6 p-14 px-6 ">
         <Link
           href="/"
-          target="_blank"
           className="text-blue-600 font-medium gap-2 items-center flex"
         >
           <span>返回首页</span>
           <Rocket />
         </Link>
-        <h1 className="font-semibold text-2xl">Hi,{session?.user.name}</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="font-semibold text-2xl">Hi,{session?.user.name}</h1>
+          <a
+            href="/users"
+            className="rounded-full border border-slate-300 px-3 py-1 text-sm hover:bg-slate-50"
+          >
+            用户管理
+          </a>
+        </div>
       </div>
       <div className="container flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">

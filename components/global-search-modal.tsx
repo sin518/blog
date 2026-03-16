@@ -1,6 +1,5 @@
 "use client";
 
-import { searchContent } from "@/app/actions/search";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -8,6 +7,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
+import { searchContent } from "@/app/actions/search";
 
 type SearchResult =
   | {
