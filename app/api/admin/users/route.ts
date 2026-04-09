@@ -3,6 +3,8 @@ import { authSession } from "@/lib/auth-utils";
 import prisma from "@/lib/db";
 import { hashPassword } from "better-auth/crypto";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const session = await authSession();
   if (!session) {
