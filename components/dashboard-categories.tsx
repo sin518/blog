@@ -1,0 +1,50 @@
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Category, User } from "@/lib/generated/prisma/client";
+import Image from "next/image";
+import { getNameInitials } from "@/lib/utils";
+
+interface CategoryProps {
+  categories: (Category & { user: User })[];
+}
+
+export default function DashboardCategories({ categories }: CategoryProps) {
+  return (
+    <div>
+      <Card>
+        <CardHeader>
+          <CardTitle>最近分类</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-6">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="p-4 rounded-lg gap-6 shadow-sm flex items-center"
+            >
+              <p className="font-medium">{category.name}</p>
+              <div className="flex items-center gap-1">
+                <div className="relative h-8 w-8 rounded-full shadow-lg overflow-hidden bg-slate-200 text-xs font-semibold text-white flex items-center justify-center">
+                  {category.user?.image ? (
+                    <Image
+                      className="rounded-full shadow-lg object-cover"
+                      src={category.user.image}
+                      alt={category.user?.name ?? "avatar"}
+                      fill
+                      unoptimized
+                      sizes="32px"
+                    />
+                  ) : (
+                    <span className="uppercase">
+                      {getNameInitials(category.user?.name ?? "?") || "?"}
+                    </span>
+                  )}
+                </div>
+                <p className="font-medium">{category.user?.name}</p>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
