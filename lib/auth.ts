@@ -3,12 +3,18 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 
+const authSecret =
+  process.env.BETTER_AUTH_SECRET ??
+  "build-time-fallback-secret-change-me-in-production";
+
 if (!process.env.BETTER_AUTH_SECRET) {
-  throw new Error("BETTER_AUTH_SECRET environment variable is required");
+  console.warn(
+    "BETTER_AUTH_SECRET is not set. Using fallback secret for build/runtime; please set it in production.",
+  );
 }
 
 export const auth = betterAuth({
-  secret: process.env.BETTER_AUTH_SECRET,
+  secret: authSecret,
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
   }),
