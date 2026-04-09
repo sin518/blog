@@ -8,6 +8,8 @@ import { getPostsByUser } from "@/app/actions/posts";
 import { getCategories } from "@/app/actions/categories";
 import DashboardCategories from "@/components/dashboard-categories";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   await requireAuth();
 

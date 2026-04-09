@@ -3,6 +3,8 @@ import { authSession } from "@/lib/auth-utils";
 import prisma from "@/lib/db";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogLayout({
   children,
 }: {

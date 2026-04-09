@@ -7,6 +7,8 @@ import Pagination from "@/components/pagination";
 import { getPosts } from "./actions/blog";
 import { authSession } from "@/lib/auth-utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home({
   searchParams,
 }: {
