@@ -34,6 +34,7 @@ export default function PostCard({ post }: PostProps) {
             unoptimized
             className="rounded-sm object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            loading="eager"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">

@@ -26,6 +26,12 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
   const [selectedUserId, setSelectedUserId] = useState<string>(
     initialUsers[0]?.id ?? "",
   );
+  const [nameInputs, setNameInputs] = useState<Record<string, string>>(
+    Object.fromEntries(initialUsers.map((user) => [user.id, user.name])),
+  );
+  const [passwordInputs, setPasswordInputs] = useState<Record<string, string>>(
+    {},
+  );
 
   const updateUser = async (
     userId: string,
@@ -117,15 +123,30 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
                 </label>
                 <div className="flex gap-2">
                   <Input
-                    defaultValue={user.name}
-                    onBlur={(event) => {
+                    value={nameInputs[user.id] ?? user.name}
+                    onChange={(event) => {
                       const value = event.currentTarget.value;
-                      if (value && value !== user.name) {
-                        updateUser(user.id, "name", value);
-                      }
+                      setNameInputs((prev) => ({ ...prev, [user.id]: value }));
                     }}
                     className="flex-1"
                   />
+                  <Button
+                    onClick={() => {
+                      const nameValue = nameInputs[user.id]?.trim() ?? "";
+                      if (!nameValue) {
+                        toast.error("用户名不能为空");
+                        return;
+                      }
+                      if (nameValue === user.name) {
+                        toast.error("用户名未更改");
+                        return;
+                      }
+                      updateUser(user.id, "name", nameValue);
+                    }}
+                    className="whitespace-nowrap"
+                  >
+                    保存
+                  </Button>
                 </div>
               </div>
 
@@ -135,22 +156,27 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
                 </label>
                 <div className="flex gap-2">
                   <Input
-                    id={`password-${user.id}`}
+                    value={passwordInputs[user.id] ?? ""}
+                    onChange={(event) => {
+                      const value = event.currentTarget.value;
+                      setPasswordInputs((prev) => ({
+                        ...prev,
+                        [user.id]: value,
+                      }));
+                    }}
                     placeholder="至少8位"
                     type="password"
                     className="flex-1"
                   />
                   <Button
                     onClick={() => {
-                      const input = document.getElementById(
-                        `password-${user.id}`,
-                      ) as HTMLInputElement | null;
-                      if (!input || input.value.trim().length < 8) {
+                      const newPwd = passwordInputs[user.id] ?? "";
+                      if (newPwd.trim().length < 8) {
                         toast.error("密码必须至少8个字符");
                         return;
                       }
-                      updateUser(user.id, "password", input.value.trim());
-                      input.value = "";
+                      updateUser(user.id, "password", newPwd.trim());
+                      setPasswordInputs((prev) => ({ ...prev, [user.id]: "" }));
                     }}
                     className="whitespace-nowrap"
                   >

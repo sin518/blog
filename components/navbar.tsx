@@ -14,7 +14,7 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { authClient } from "@/lib/auth-client";
 import { getNameInitials } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
 import GlobalSearchModal from "./global-search-modal";
 
@@ -27,6 +27,8 @@ export function NavMenu({
 }) {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
+  const displayName = userName ?? "访客";
+  const initials = getNameInitials(displayName) || "访";
 
   return (
     <NavigationMenu viewport={isMobile} className="mx-auto max-w-full my-5">
@@ -38,7 +40,7 @@ export function NavMenu({
         </NavigationMenuList>
 
         <NavigationMenuList className="flex-wrap">
-          <NavigationMenuItem className="hidden md:block">
+          <NavigationMenuItem>
             <div
               className="mr-6 cursor-pointer"
               onClick={() => setIsOpen(true)}
@@ -48,15 +50,21 @@ export function NavMenu({
 
             <GlobalSearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
           </NavigationMenuItem>
-          <NavigationMenuItem className="hidden md:block">
+          <NavigationMenuItem>
             <NavigationMenuTrigger>
-              <Avatar className="w-8 h-8 rounded-full">
-                <AvatarImage src={userImage} className="rounded-full" />
-                <AvatarFallback>{getNameInitials(userName!)}</AvatarFallback>
+              <Avatar className="w-8 h-8 rounded-full overflow-hidden">
+                {userImage ? (
+                  <AvatarImage
+                    src={userImage}
+                    className="rounded-full"
+                    alt={displayName}
+                  />
+                ) : null}
+                <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[200px] gap-4">
+              <ul className="grid w-50 gap-4">
                 <li>
                   <NavigationMenuLink asChild>
                     <Link
