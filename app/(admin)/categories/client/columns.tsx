@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { Category } from "@/lib/generated/prisma/client";
+import { Category } from "@prisma/client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";

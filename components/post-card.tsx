@@ -1,5 +1,5 @@
 "use client";
-import { Category, Post } from "@/lib/generated/prisma/client";
+import { Category, Post } from "@prisma/client";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import Image from "next/image";

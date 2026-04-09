@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Category, Post } from "@/lib/generated/prisma/client";
+import { Category, Post } from "@prisma/client";
 
 const chartConfig = {} satisfies ChartConfig;
 

@@ -2,7 +2,7 @@
 import { PostFormValues } from "@/components/post-form";
 import { authSession } from "@/lib/auth-utils";
 import prisma from "@/lib/db";
-import { Post, PostStatus } from "@/lib/generated/prisma/client";
+import { Post, PostStatus } from "@prisma/client";
 
 export const getUniquePost = async (id: string) => {
   try {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Category, User } from "@/lib/generated/prisma/client";
+import { Category, User } from "@prisma/client";
 import Image from "next/image";
 import { getNameInitials } from "@/lib/utils";
 

@@ -1,6 +1,6 @@
 'use client'
 import { DataTable } from "@/components/data-table";
-import { Category } from "@/lib/generated/prisma/client";
+import { Category } from "@prisma/client";
 import { z } from "zod";
 import React from "react";
 import { useForm } from "react-hook-form";
