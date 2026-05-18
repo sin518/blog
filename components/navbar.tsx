@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Search } from "lucide-react";
+import { Home, LayoutDashboard, LogOut, Search } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -31,21 +31,31 @@ export function NavMenu({
   const initials = getNameInitials(displayName) || "访";
 
   return (
-    <NavigationMenu viewport={isMobile} className="mx-auto max-w-full my-5">
-      <div className="flex justify-between w-full container">
-        <NavigationMenuList className="flex-wrap">
+    <NavigationMenu viewport={isMobile} className="mx-auto max-w-full">
+      <div className="container flex w-full items-center justify-between py-3">
+        <NavigationMenuList className="flex-wrap gap-1">
           <NavigationMenuItem>
-            <NavigationMenuLink href="/">主页</NavigationMenuLink>
+            <NavigationMenuLink
+              href="/"
+              className="flex-row items-center gap-2 font-semibold"
+            >
+              <Home className="size-4" />
+              博客
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/#latest">最新</NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
 
-        <NavigationMenuList className="flex-wrap">
+        <NavigationMenuList className="flex-wrap gap-1">
           <NavigationMenuItem>
             <div
-              className="mr-6 cursor-pointer"
+              className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
               onClick={() => setIsOpen(true)}
+              aria-label="搜索"
             >
-              <Search />
+              <Search className="size-4" />
             </div>
 
             <GlobalSearchModal isOpen={isOpen} setIsOpen={setIsOpen} />

@@ -2,6 +2,7 @@
 
 import { authSession } from "@/lib/auth-utils";
 import prisma from "@/lib/db";
+import { PostStatus } from "@prisma/client";
 
 const PAGE_SIZE = 10;
 
@@ -17,6 +18,7 @@ export const getPosts = async (page: number) => {
   try {
     const [posts, totalCount] = await prisma.$transaction([
       prisma.post.findMany({
+        where: { status: PostStatus.published },
         skip,
         take: PAGE_SIZE,
         orderBy: { createdAt: "desc" },
@@ -27,7 +29,7 @@ export const getPosts = async (page: number) => {
           category: true,
         },
       }),
-      prisma.post.count(),
+      prisma.post.count({ where: { status: PostStatus.published } }),
     ]);
     return {
       posts: posts.map((post) => ({
@@ -83,7 +85,7 @@ export const getPostsByCategory = async (categoryId: string, page: number) => {
   try {
     const [posts, totalCount] = await prisma.$transaction([
       prisma.post.findMany({
-        where: { categoryId },
+        where: { categoryId, status: PostStatus.published },
         skip,
         take: PAGE_SIZE,
         orderBy: { createdAt: "desc" },
@@ -94,7 +96,7 @@ export const getPostsByCategory = async (categoryId: string, page: number) => {
           category: true,
         },
       }),
-      prisma.post.count({ where: { categoryId } }),
+      prisma.post.count({ where: { categoryId, status: PostStatus.published } }),
     ]);
     return {
       posts: posts.map((post) => ({
@@ -121,7 +123,7 @@ export const getPostsByTag = async (tag: string, page: number) => {
   try {
     const [posts, totalCount] = await prisma.$transaction([
       prisma.post.findMany({
-        where: { tags: { has: tag } },
+        where: { tags: { has: tag }, status: PostStatus.published },
         skip,
         take: PAGE_SIZE,
         orderBy: { createdAt: "desc" },
@@ -132,7 +134,9 @@ export const getPostsByTag = async (tag: string, page: number) => {
           category: true,
         },
       }),
-      prisma.post.count({ where: { tags: { has: tag } } }),
+      prisma.post.count({
+        where: { tags: { has: tag }, status: PostStatus.published },
+      }),
     ]);
     return {
       posts: posts.map((post) => ({

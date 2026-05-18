@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { format } from "date-fns";
-import { MoveRight } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Eye } from "lucide-react";
 import { stripHtml } from "@/lib/utils";
 
 interface PostProps {
@@ -24,49 +24,68 @@ export default function PostCard({ post }: PostProps) {
   const excerpt = stripHtml(post.content);
 
   return (
-    <Card className="w-full p-0 pb-4 border-0 shadow-md gap-1 relative">
-      <div className="relative h-60 bg-slate-200 overflow-hidden rounded-sm">
-        {post.imageUrl ? (
-          <Image
-            src={post.imageUrl}
-            alt={post.title}
-            fill
-            unoptimized
-            className="rounded-sm object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            loading="eager"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-            无封面图片
-          </div>
-        )}
-      </div>
-      <CardHeader className="gap-0">
-        <CardTitle className="font-semibold line-clamp-3 ">
-          {post.title}
+    <Card className="group w-full gap-0 overflow-hidden rounded-lg border bg-card p-0 shadow-none transition hover:-translate-y-0.5 hover:shadow-md">
+      <Link href={`/blog/posts/${post.slug}`} className="block">
+        <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+          {post.imageUrl ? (
+            <Image
+              src={post.imageUrl}
+              alt={post.title}
+              fill
+              unoptimized
+              className="object-cover transition duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+              loading="lazy"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+              无封面图片
+            </div>
+          )}
+        </div>
+      </Link>
+      <CardHeader className="gap-3 p-5 pb-3">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          {post.category ? (
+            <Link href={`/blog/category/${post.category.id}`}>
+              <Badge variant="outline">{post.category.name}</Badge>
+            </Link>
+          ) : null}
+          <span className="inline-flex items-center gap-1">
+            <CalendarDays className="size-3.5" />
+            {format(post.createdAt, "yyyy/MM/dd")}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Eye className="size-3.5" />
+            {post.views}
+          </span>
+        </div>
+        <CardTitle className="line-clamp-2 text-xl font-semibold leading-snug">
+          <Link href={`/blog/posts/${post.slug}`}>{post.title}</Link>
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm line-clamp-3">{excerpt}</p>
-        <div className="flex gap-2 py-6 flex-wrap">
+      <CardContent className="flex flex-1 flex-col gap-5 p-5 pt-0">
+        <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
+          {excerpt}
+        </p>
+        <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (
             <Link href={`/blog/tag/${tag}`} key={tag}>
               <Badge variant="secondary">#{tag}</Badge>
             </Link>
           ))}
         </div>
-        <div className="flex  justify-between w-full gap-2">
-          <div className="flex gap-1">
-            <div className="relative h-8 w-8 rounded-full shadow-lg overflow-hidden bg-slate-200">
+        <div className="mt-auto flex w-full items-center justify-between gap-3 border-t pt-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-muted">
               {post.user.image ? (
                 <Image
                   src={post.user.image}
                   alt={post.user.name}
                   fill
                   unoptimized
-                  className="rounded-full shadow-lg"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="rounded-full object-cover"
+                  sizes="32px"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center text-[10px] font-semibold text-muted-foreground">
@@ -75,22 +94,15 @@ export default function PostCard({ post }: PostProps) {
               )}
             </div>
 
-            <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-semibold">
-                {post.user.name}
-              </span>
-              <span className="text-[10px] text-neutral-500 font-semibold">
-                {format(post.createdAt, "dd/MM/yyyy")}
-              </span>
-            </div>
+            <span className="truncate text-xs font-medium">{post.user.name}</span>
           </div>
 
           <Link
             href={`/blog/posts/${post.slug}`}
-            className="flex gap-1 text-xs items-center font-medium"
+            className="inline-flex shrink-0 items-center gap-1 text-xs font-medium"
           >
-            阅读更多
-            <MoveRight />
+            阅读
+            <ArrowUpRight className="size-4" />
           </Link>
         </div>
       </CardContent>
