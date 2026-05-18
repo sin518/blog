@@ -4,8 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:frontend": "next dev -p 3000",
+    "dev:backend": "node backend/server.mjs",
+    "dev:split": "npm run dev:backend & npm run dev:frontend",
+    "dev:reset": "npx kill-port 3000 4000 && npm run dev:split",
     "build": "prisma generate && next build",
     "start": "next start",
+    "start:backend": "node backend/server.mjs",
     "lint": "eslint"
   },
   "dependencies": {
@@ -48,8 +53,11 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "cors": "^2.8.6",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.4.2",
     "embla-carousel-react": "^8.6.0",
+    "express": "^5.2.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.562.0",
     "next": "16.1.2",

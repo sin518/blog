@@ -1,5 +1,5 @@
 import React from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
 export default function AdminLayout({
@@ -10,7 +10,15 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <div className="p-6 w-full">{children}</div>
+      <SidebarInset className="min-w-0">
+        <header className="sticky top-0 z-20 flex h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur md:hidden">
+          <SidebarTrigger />
+          <span className="text-sm font-medium">Blog Admin</span>
+        </header>
+        <div className="w-full min-w-0 px-4 py-5 sm:px-6 lg:px-8">
+          {children}
+        </div>
+      </SidebarInset>
     </SidebarProvider>
   );
 }
